@@ -1,6 +1,7 @@
 
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:travel_guider/models/image_model.dart';
 import 'package:travel_guider/models/user_model.dart';
 import 'package:travel_guider/models/visit_model.dart';
 
@@ -23,10 +24,17 @@ class DBHelper {
   )''';
 
 
+  static final String CREATE_TABLE_IMAGE = '''create table $TABLE_IMAGE(
+   $COL_IMAGE_ID integer primary key autoincrement not null,
+   $COL_IMAGE_TITLE text not null,
+   $COL_IMAGE_PICTURE blob
+   )''';
+
 
   static void _onCreate(Database db, int version) {
     db.execute(CREATE_TABLE_USER);
     db.execute(CREATE_TABLE_PLACE);
+    db.execute(CREATE_TABLE_IMAGE);
   }
 
   static Future<Database> createDBUser() async {
@@ -35,6 +43,30 @@ class DBHelper {
     Database db = await openDatabase(path, version: 1, onCreate: _onCreate);
     return db;
   }
+
+  static Future<Database> createImage() async {
+     final dbpath = await getDatabasesPath();
+     final path = join(dbpath, 'img.db');
+     Database db = await openDatabase(path, version: 1, onCreate: _onCreate);
+    return db;
+   }
+
+  Future<List<PictureModel>> getPictures() async {
+     var db = await createDBUser();
+     List<Map> list = await db.rawQuery('SELECT * FROM Picture');
+     List<PictureModel> pictures = [];
+     for (int i = 0; i < list.length; i++) {
+       //pictures.add( Picture(list[i]["id"], list[i]["text"], list[i]["picture"]));
+       pictures.add(PictureModel.fromMap(
+           list[i]['id'], list[i]["text"], list[i]["picture"]));
+     }
+     return pictures;
+   }
+  void savePicture(PictureModel picture) async {
+   var db = await createDBUser();
+     await db.insert(TABLE_IMAGE, PictureModel().toMap());
+     //await dbClient.insert("Picture", picture.toMap());
+   }
 
 
   static Future<int> insertUser(UserModel user) async {

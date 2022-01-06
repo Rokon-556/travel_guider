@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:chewie/chewie.dart';
@@ -14,52 +13,55 @@ class Camera extends StatefulWidget {
 }
 
 class _CameraState extends State<Camera> {
-
   File? imageFile;
   File? videoFile;
 
-
-
-  _camera()async{
+  _camera() async {
     final ImagePicker _picker = ImagePicker();
 
-    XFile? photo=await _picker.pickImage(source: ImageSource.camera);
-    if(photo!=null){
-      setState(() {
-        imageFile=photo as File;
-      },);
+    XFile? photo = await _picker.pickImage(source: ImageSource.camera);
+    if (photo != null) {
+      setState(
+        () {
+          imageFile = photo as File;
+        },
+      );
     }
   }
 
-  _picture()async{
+  _picture() async {
     final ImagePicker _picker = ImagePicker();
     XFile? photo = await _picker.pickImage(source: ImageSource.gallery);
     //var picture = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if(photo!=null){
-      setState(() {
-        imageFile=photo as File;
-      },);
+    if (photo != null) {
+      setState(
+        () {
+          imageFile = photo as File;
+        },
+      );
     }
   }
-  _videoPic()async{
-    final ImagePicker _picker=ImagePicker();
-    XFile? video=await _picker.pickVideo(source: ImageSource.gallery);
-    if(video!=null){
+
+  _videoPic() async {
+    final ImagePicker _picker = ImagePicker();
+    XFile? video = await _picker.pickVideo(source: ImageSource.gallery);
+    if (video != null) {
       setState(() {
-        videoFile=video as File;
+        videoFile = video as File;
       });
     }
   }
 
-  _record()async{
-    final ImagePicker _picker=ImagePicker();
-    XFile? video=await _picker.pickVideo(source: ImageSource.camera);
-    if(video!=null){
+  _record() async {
+    final ImagePicker _picker = ImagePicker();
+    XFile? video = await _picker.pickVideo(source: ImageSource.camera);
+    if (video != null) {
       setState(() {
-        videoFile=video as File;
+        videoFile = video as File;
       });
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,42 +84,42 @@ class _CameraState extends State<Camera> {
                   width: MediaQuery.of(context).size.height * (100 / 100),
                   child: videoFile == null
                       ? const Center(
-                    child: Icon(
-                      Icons.videocam,
-                      color: Colors.red,
-                      size: 50,
-                    ),
-                  )
+                          child: Icon(
+                            Icons.videocam,
+                            color: Colors.red,
+                            size: 50,
+                          ),
+                        )
                       : FittedBox(
-                    fit: BoxFit.contain,
-                    child: mounted
-                        ? Chewie(
-                      controller: ChewieController(
-                        videoPlayerController:
-                        //VideoPlayerController.file(_camera()),
-                        VideoPlayerController.file(videoFile!),
-                        aspectRatio: 3/2,
-                        autoPlay: true,
-                        looping: true,
-                      ),
-                    )
-                        : Container(),
-                  ),
+                          fit: BoxFit.contain,
+                          child: mounted
+                              ? Chewie(
+                                  controller: ChewieController(
+                                    videoPlayerController:
+                                        //VideoPlayerController.file(_camera()),
+                                        VideoPlayerController.file(videoFile!),
+                                    aspectRatio: 3 / 2,
+                                    autoPlay: true,
+                                    looping: true,
+                                  ),
+                                )
+                              : Container(),
+                        ),
                 ),
-
                 Container(
                   color: Colors.green,
                   height: MediaQuery.of(context).size.height * (30 / 100),
                   width: MediaQuery.of(context).size.height * (100 / 100),
-                  child: imageFile==null?const Center(
-                    child: Icon(
-                      Icons.photo,
-                      color: Colors.blue,
-                      size: 50,
-                    ),
-                  ):Image.file(imageFile!),
+                  child: imageFile == null
+                      ? const Center(
+                          child: Icon(
+                            Icons.photo,
+                            color: Colors.blue,
+                            size: 50,
+                          ),
+                        )
+                      : Image.file(imageFile!),
                 ),
-
                 ElevatedButton(
                   onPressed: _camera,
                   child: Row(
