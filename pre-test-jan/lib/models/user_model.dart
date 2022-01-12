@@ -6,6 +6,7 @@ final String COL_USER_NAME = 'user_name';
 final String COL_USER_PHONE = 'user_phone';
 final String COL_USER_EMAIL = 'user_email';
 final String COL_USER_PASSWORD = 'user_password';
+final String COL_USER_ROLE = 'user_role';
 
 class UserModel {
   int ?id;
@@ -13,9 +14,10 @@ class UserModel {
   String email = '';
   String phone = '';
   String password = '';
+  String role='';
 
   UserModel(
-      {this.id,this.name = '', this.email = '', this.phone = '', this.password = ''});
+      {this.id,this.name = '', this.email = '', this.phone = '', this.password = '',this.role=''});
 
   UserModel.fromMap(Map<String, dynamic> map) {
     id=map[COL_USER_ID];
@@ -23,6 +25,7 @@ class UserModel {
     phone = map[COL_USER_PHONE];
     email = map[COL_USER_EMAIL];
     password = map[COL_USER_PASSWORD];
+    role = map[COL_USER_ROLE];
   }
 
   Map<String, dynamic> toMap() {
@@ -31,6 +34,7 @@ class UserModel {
       COL_USER_PHONE: phone,
       COL_USER_EMAIL: email,
       COL_USER_PASSWORD: password,
+      COL_USER_ROLE:role,
     };
     if(id!=null){
       usrMap[COL_USER_ID]=id;
@@ -40,6 +44,6 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel{ name: $name, email: $email, phone: $phone, password: $password}';
+    return 'UserModel{ name: $name, email: $email, phone: $phone, password: $password, role: $role}';
   }
 }

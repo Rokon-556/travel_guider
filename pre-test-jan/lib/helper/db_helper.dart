@@ -1,9 +1,11 @@
 
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:travel_guider/models/image_model.dart';
+import 'package:travel_guider/models/admin_model.dart';
+import 'package:travel_guider/models/geolocation_model.dart';
 import 'package:travel_guider/models/user_model.dart';
 import 'package:travel_guider/models/visit_model.dart';
+import 'package:travel_guider/models/visitor_model.dart';
 
 class DBHelper {
   static final String CREATE_TABLE_USER = ''' create table $TABLE_USER(
@@ -11,9 +13,9 @@ class DBHelper {
   $COL_USER_NAME text not null,
   $COL_USER_PHONE text not null,
   $COL_USER_EMAIL text not null,
-  $COL_USER_PASSWORD text not null
+  $COL_USER_PASSWORD text not null,
+  $COL_USER_ROLE text not null
   )''';
-
 
   static final String CREATE_TABLE_PLACE = ''' create table $TABLE_PLACE(
   $COL_PLACE_ID integer primary key autoincrement not null,
@@ -23,18 +25,37 @@ class DBHelper {
   
   )''';
 
+  static final String CREATE_TABLE_ADMIN=''' create table $TABLE_ADMIN(
+  $COL_ADMIN_ID integer primary key autoincrement,
+  $COL_USER_ADMIN_ID integer not null,
+  foreign key($COL_USER_ADMIN_ID) references $CREATE_TABLE_USER($COL_USER_ID)
+  )''';
 
-  static final String CREATE_TABLE_IMAGE = '''create table $TABLE_IMAGE(
-   $COL_IMAGE_ID integer primary key autoincrement not null,
-   $COL_IMAGE_TITLE text not null,
-   $COL_IMAGE_PICTURE blob
-   )''';
+  static final String CREATE_TABLE_VISITOR='''create table $TABLE_VISITOR(
+  $COL_VISITOR_ID integer primary key autoincrement,
+  $COL_VISITOR_USER_ID integer not null,
+  $COL_VISITOR_PLACE_ID integer not null,
+  $COL_VISITOR_GEO_ID integer not null,
+  foreign key($COL_VISITOR_USER_ID) references $CREATE_TABLE_USER($COL_USER_ID),
+  foreign key($COL_VISITOR_GEO_ID) references $CREATE_TABLE_GEOLOCATION($COL_VISITOR_GEO_ID)
+  
+  ) ''';
+
+  static final String CREATE_TABLE_GEOLOCATION='''create table $TABLE_GEOLOCATION(
+  $COL_POSITION_ID integer primary key autoincrement,
+  $COL_IMAGE_ID blob,
+  $COL_POSITION_LAT real not null,
+  $COL_POSITION_LONG real not null
+  
+  ) ''';
 
 
   static void _onCreate(Database db, int version) {
     db.execute(CREATE_TABLE_USER);
     db.execute(CREATE_TABLE_PLACE);
-    db.execute(CREATE_TABLE_IMAGE);
+    db.execute(CREATE_TABLE_ADMIN);
+    db.execute(CREATE_TABLE_VISITOR);
+    db.execute(CREATE_TABLE_GEOLOCATION);
   }
 
   static Future<Database> createDBUser() async {
@@ -49,23 +70,6 @@ class DBHelper {
      final path = join(dbpath, 'img.db');
      Database db = await openDatabase(path, version: 1, onCreate: _onCreate);
     return db;
-   }
-
-  Future<List<PictureModel>> getPictures() async {
-     var db = await createDBUser();
-     List<Map> list = await db.rawQuery('SELECT * FROM Picture');
-     List<PictureModel> pictures = [];
-     for (int i = 0; i < list.length; i++) {
-       //pictures.add( Picture(list[i]["id"], list[i]["text"], list[i]["picture"]));
-       pictures.add(PictureModel.fromMap(
-           list[i]['id'], list[i]["text"], list[i]["picture"]));
-     }
-     return pictures;
-   }
-  void savePicture(PictureModel picture) async {
-   var db = await createDBUser();
-     await db.insert(TABLE_IMAGE, PictureModel().toMap());
-     //await dbClient.insert("Picture", picture.toMap());
    }
 
 
