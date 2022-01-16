@@ -1,10 +1,9 @@
 
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:travel_guider/models/admin_model.dart';
 import 'package:travel_guider/models/geolocation_model.dart';
 import 'package:travel_guider/models/user_model.dart';
-import 'package:travel_guider/models/visit_model.dart';
+import 'package:travel_guider/models/visit_plan_model.dart';
 import 'package:travel_guider/models/visitor_model.dart';
 
 class DBHelper {
@@ -14,22 +13,18 @@ class DBHelper {
   $COL_USER_PHONE text not null,
   $COL_USER_EMAIL text not null,
   $COL_USER_PASSWORD text not null,
-  $COL_USER_ROLE text not null
+  $COL_USER_ROLE int not null
   )''';
 
   static final String CREATE_TABLE_PLACE = ''' create table $TABLE_PLACE(
   $COL_PLACE_ID integer primary key autoincrement not null,
-  $COL_PLACE_NAME text not null,
-  $COL_PLACE_LATITUDE real not null,
-  $COL_PLACE_LONGITUDE real not null
+  $COL_START_PLACE_NAME text not null,
+  $COL_START_PLACE_LATITUDE real not null,
+  $COL_START_PLACE_LONGITUDE real not null
   
   )''';
 
-  static final String CREATE_TABLE_ADMIN=''' create table $TABLE_ADMIN(
-  $COL_ADMIN_ID integer primary key autoincrement,
-  $COL_USER_ADMIN_ID integer not null,
-  foreign key($COL_USER_ADMIN_ID) references $CREATE_TABLE_USER($COL_USER_ID)
-  )''';
+
 
   static final String CREATE_TABLE_VISITOR='''create table $TABLE_VISITOR(
   $COL_VISITOR_ID integer primary key autoincrement,
@@ -53,7 +48,7 @@ class DBHelper {
   static void _onCreate(Database db, int version) {
     db.execute(CREATE_TABLE_USER);
     db.execute(CREATE_TABLE_PLACE);
-    db.execute(CREATE_TABLE_ADMIN);
+
     db.execute(CREATE_TABLE_VISITOR);
     db.execute(CREATE_TABLE_GEOLOCATION);
   }
@@ -110,12 +105,12 @@ class DBHelper {
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  static Future<List<VisitModel>> getPlace() async {
+  static Future<List<VisitPlanModel>> getPlace() async {
     final db = await createDBPlace();
     final List<Map<String, dynamic>> placeMap =
-        await db.query(TABLE_PLACE, orderBy: COL_PLACE_NAME);
+        await db.query(TABLE_PLACE, orderBy: COL_START_PLACE_NAME);
     return List.generate(
-        placeMap.length, (index) => VisitModel.fromMap(placeMap[index]),);
+        placeMap.length, (index) => VisitPlanModel.fromMap(placeMap[index]),);
   }
 
   static Future<void> deletePlace(int id) async {
@@ -129,17 +124,17 @@ class DBHelper {
   //   "$COL_PLACE_ID = FK_user_ID");
   // }
 
-  static Future<VisitModel?> getPlacesByID(int id) async {
+  static Future<VisitPlanModel?> getPlacesByID(int id) async {
     final db = await createDBPlace();
     final List<Map<String, dynamic>> places = await db
         .query(TABLE_PLACE, where: '$COL_PLACE_ID = ?',whereArgs: [id]);
     if (places.length > 0) {
-       return VisitModel.fromMap(places.first);
+       return VisitPlanModel.fromMap(places.first);
     }
     return null;
   }
 
-  static Future<int> updatePlace(VisitModel visitModel) async {
+  static Future<int> updatePlace(VisitPlanModel visitModel) async {
     final db = await createDBPlace();
     return await db.update(TABLE_PLACE, visitModel.toMap(),
         where: '$COL_PLACE_ID = ?', whereArgs: [visitModel.id]);

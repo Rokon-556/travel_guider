@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:travel_guider/helper/db_helper.dart';
-import 'package:travel_guider/models/visit_model.dart';
+import 'package:travel_guider/models/visit_plan_model.dart';
 import 'package:travel_guider/widgets/visit_item.dart';
 
 import 'add_place.dart';
@@ -15,7 +15,7 @@ class VisitList extends StatefulWidget {
 }
 
 class _VisitListState extends State<VisitList> {
-  List<VisitModel> visitList = [];
+  List<VisitPlanModel> visitList = [];
 
   getVisitList() {
     DBHelper.getPlace().then(

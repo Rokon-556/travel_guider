@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 //import 'package:travel_guider/helper/db_helper.dart';
-import 'package:travel_guider/models/visit_model.dart';
+import 'package:travel_guider/models/visit_plan_model.dart';
 //import 'package:travel_guider/pages/add_place.dart';
 import 'package:travel_guider/pages/google_map.dart';
 //import 'package:travel_guider/pages/visit_list.dart';
 
 class VisitItem extends StatefulWidget {
-  final VisitModel visitModel;
+  final VisitPlanModel visitModel;
 
   VisitItem(this.visitModel);
 
@@ -29,7 +29,7 @@ class _VisitItemState extends State<VisitItem> {
         child: Row(
           children: <Widget>[
             Expanded(
-              child: Text(widget.visitModel.name.toString()),
+              child: Text(widget.visitModel.startPlaceName.toString()),
               flex: 5,
             ),
             Expanded(
@@ -43,9 +43,9 @@ class _VisitItemState extends State<VisitItem> {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => MyGoogleMap(
-                        name: widget.visitModel.name.toString(),
-                        latitude: widget.visitModel.latitude,
-                        longitude: widget.visitModel.longitude,
+                        name: widget.visitModel.startPlaceName.toString(),
+                        latitude: widget.visitModel.startLatitude,
+                        longitude: widget.visitModel.startLongitude,
                       ),
                     ),
                   );

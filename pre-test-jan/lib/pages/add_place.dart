@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:travel_guider/helper/db_helper.dart';
-import 'package:travel_guider/models/visit_model.dart';
+import 'package:travel_guider/models/visit_plan_model.dart';
 import 'package:travel_guider/pages/visit_list.dart';
 
 
@@ -14,25 +14,32 @@ class Places extends StatefulWidget {
 }
 
 class _PlacesState extends State<Places> {
-  List<VisitModel> visitList = [];
-  final visit = VisitModel();
+  List<VisitPlanModel> visitList = [];
+  final visit = VisitPlanModel();
   final _formKey = GlobalKey<FormState>();
-  TextEditingController? _nameController,
-      _latitudeController,
-      _longitudeController;
+  TextEditingController? _startNameController,
+      _startLatController,
+      _startLongitudeController,
+  _endLatController,_endLongitudeController,_endNameController;
 
   @override
   void initState() {
-    _nameController = TextEditingController();
-    _latitudeController = TextEditingController();
-    _longitudeController = TextEditingController();
+    _startNameController = TextEditingController();
+    _startLatController = TextEditingController();
+    _startLongitudeController = TextEditingController();
+    _endLatController= TextEditingController();
+    _endLongitudeController = TextEditingController();
+    _endNameController = TextEditingController();
 
     if (widget.placeID != null) {
       DBHelper.getPlacesByID(widget.placeID!).then((model) {
         print(widget.placeID);
-        _nameController?.text = model!.name.toString();
-        _latitudeController?.text = model!.latitude.toString();
-        _longitudeController?.text = model!.longitude.toString();
+        _startNameController?.text = model!.startPlaceName.toString();
+        _startLatController?.text = model!.startLatitude.toString();
+        _startLongitudeController?.text = model!.startLongitude.toString();
+        _endLatController?.text = model!.endLatitude.toString();
+        _endLongitudeController?.text = model!.endLongitude.toString();
+        _endNameController?.text = model!.endPlaceName.toString();
       });
     }
     super.initState();
@@ -89,9 +96,9 @@ class _PlacesState extends State<Places> {
           child: ListView(
             children: <Widget>[
               TextFormField(
-                controller: _nameController,
+                controller: _startNameController,
                 decoration: InputDecoration(
-                  hintText: 'Enter Place Name',
+                  hintText: 'Enter  Start Place Name',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -103,17 +110,17 @@ class _PlacesState extends State<Places> {
                   return null;
                 },
                 onSaved: (value) {
-                  visit.name = value as String;
+                  visit.startPlaceName = value as String;
                 },
               ),
               const SizedBox(
                 height: 15.0,
               ),
               TextFormField(
-                controller: _latitudeController,
+                controller: _startLatController,
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
-                  hintText: 'Enter Latitude',
+                  hintText: 'Enter Start Latitude',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -125,18 +132,18 @@ class _PlacesState extends State<Places> {
                   return null;
                 },
                 onSaved: (value) {
-                  visit.latitude = double.parse('$value');
-                  print(visit.latitude);
+                  visit.startLatitude = double.parse('$value');
+                  print(visit.startLatitude);
                 },
               ),
               const SizedBox(
                 height: 15.0,
               ),
               TextFormField(
-                controller: _longitudeController,
+                controller: _startLongitudeController,
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
-                  hintText: 'Enter Longitude',
+                  hintText: 'Enter Start Longitude',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -148,9 +155,68 @@ class _PlacesState extends State<Places> {
                   return null;
                 },
                 onSaved: (value) {
-                  visit.longitude = double.parse('$value');
+                  visit.startLongitude = double.parse('$value');
                 },
               ),
+
+              TextFormField(
+                controller: _startLongitudeController,
+                keyboardType: TextInputType.phone,
+                decoration: InputDecoration(
+                  hintText: 'Enter End Longitude',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                validator: (value) {
+                  if (value!.isEmpty || value.length < 4) {
+                    return 'Please Save a valid longitude';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  visit.endLatitude = double.parse('$value');
+                },
+              ),
+
+              TextFormField(
+                controller: _startLongitudeController,
+                keyboardType: TextInputType.phone,
+                decoration: InputDecoration(
+                  hintText: 'Enter End Longitude',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                validator: (value) {
+                  if (value!.isEmpty || value.length < 4) {
+                    return 'Please Save a valid longitude';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  visit.endLongitude = double.parse('$value');
+                },
+              ),
+              TextFormField(
+                controller: _startNameController,
+                decoration: InputDecoration(
+                  hintText: 'Enter  End Place Name',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                validator: (value) {
+                  if (value!.isEmpty || value.length < 6) {
+                    return 'Please Save a valid name';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  visit.endPlaceName = value as String;
+                },
+              ),
+
               const SizedBox(
                 height: 15.0,
               ),

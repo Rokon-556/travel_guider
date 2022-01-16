@@ -24,12 +24,14 @@ class _MyRegistrationState extends State<MyRegistration> {
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _adminController=TextEditingController();
 
   void _saveUser() async {
     String uName = _nameController.text;
     String uEmail = _emailController.text;
     String uPhone = _phoneController.text;
     String uPassword = _passwordController.text;
+    String uAdmin=_adminController.text;
 
     if (_formKey.currentState!.validate()) {
       print('ami');
@@ -156,6 +158,28 @@ class _MyRegistrationState extends State<MyRegistration> {
                   },
                   onSaved: (value) {
                     user.password = value as String;
+                  },
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                TextFormField(
+                  controller: _adminController,
+                 // obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: 'Enter Role',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.length < 6) {
+                      return 'Please enter valid password';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    user.isAdmin = value as int;
                   },
                 ),
                 const SizedBox(
