@@ -39,7 +39,7 @@ class _MyRegistrationState extends State<MyRegistration> {
       print('save');
 
       UserModel uModel = UserModel(
-          name: uName, password: uPassword, email: uEmail, phone: uPhone);
+          name: uName, password: uPassword, email: uEmail, phone: uPhone,isAdmin: uAdmin);
       print('why');
 
       await DBHelper.insertUser(uModel).then((userData) {
@@ -173,13 +173,13 @@ class _MyRegistrationState extends State<MyRegistration> {
                     ),
                   ),
                   validator: (value) {
-                    if (value == null || value.length < 6) {
-                      return 'Please enter valid password';
+                    if (value == null) {
+                      return 'Please enter valid Role';
                     }
                     return null;
                   },
                   onSaved: (value) {
-                    user.isAdmin = value as int;
+                    user.isAdmin = value as String;
                   },
                 ),
                 const SizedBox(

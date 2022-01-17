@@ -158,9 +158,12 @@ class _PlacesState extends State<Places> {
                   visit.startLongitude = double.parse('$value');
                 },
               ),
+              const SizedBox(
+                height: 15.0,
+              ),
 
               TextFormField(
-                controller: _startLongitudeController,
+                controller: _endLatController,
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                   hintText: 'Enter End Longitude',
@@ -178,9 +181,12 @@ class _PlacesState extends State<Places> {
                   visit.endLatitude = double.parse('$value');
                 },
               ),
+              const SizedBox(
+                height: 15.0,
+              ),
 
               TextFormField(
-                controller: _startLongitudeController,
+                controller:_endLongitudeController,
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                   hintText: 'Enter End Longitude',
@@ -198,8 +204,11 @@ class _PlacesState extends State<Places> {
                   visit.endLongitude = double.parse('$value');
                 },
               ),
+              const SizedBox(
+                height: 15.0,
+              ),
               TextFormField(
-                controller: _startNameController,
+                controller: _endNameController,
                 decoration: InputDecoration(
                   hintText: 'Enter  End Place Name',
                   border: OutlineInputBorder(

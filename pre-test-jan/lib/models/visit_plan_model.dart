@@ -3,8 +3,8 @@ final String COL_PLACE_ID='place_id';
 final String COL_START_PLACE_NAME='start_place_name';
 final String COL_START_PLACE_LATITUDE='start_place_latitude';
 final String COL_START_PLACE_LONGITUDE='start_place_longitude';
-final String COL_DEST_PLACE_LATITUDE='start_place_longitude';
-final String COL_DEST_PLACE_LONGITUDE='start_place_longitude';
+final String COL_DEST_PLACE_LATITUDE='end_place_latitude';
+final String COL_DEST_PLACE_LONGITUDE='end_place_longitude';
 final String COL_END_PLACE_NAME='end_place_name';
 
 //final String COL_PLACE_ADMIN_ID='place_admin_id';
@@ -36,7 +36,7 @@ class VisitPlanModel {
     startLongitude=map[COL_START_PLACE_LONGITUDE];
     endLatitude=map[COL_DEST_PLACE_LATITUDE];
     endLongitude=map[COL_DEST_PLACE_LONGITUDE];
-    endPlaceName=map[COL_START_PLACE_NAME];
+    endPlaceName=map[COL_END_PLACE_NAME];
 
   }
 

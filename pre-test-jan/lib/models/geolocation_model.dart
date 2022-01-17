@@ -6,7 +6,7 @@ final String COL_IMAGE_ID = 'img_id';
 final String COL_VIDEO_ID = 'vdo_id';
 final String COL_POSITION_LAT = 'pos_lat';
 final String COL_POSITION_LONG = 'pos_long';
-final String COL_PLC_VISITOR_ID = 'visitor_id';
+final String COL_SELECTED_PLC_ID = 'selected_plc_id';
 
 class GeolocationModel {
   int? placeID;
@@ -14,7 +14,7 @@ class GeolocationModel {
   Uint8List? plcVdoID;
   double? plcLat;
   double? plcLong;
-  int? plcVisitorID;
+  int? selectedPlaceID;
 
   GeolocationModel(
       {this.placeID,
@@ -22,13 +22,13 @@ class GeolocationModel {
       this.plcVdoID,
       this.plcLat,
       this.plcLong,
-      this.plcVisitorID});
+      this.selectedPlaceID});
 
   @override
   String toString() {
     return 'GeolocationModel{placeID: $placeID, plcImgID: $plcImgID,'
         'plcVdoId:$plcVdoID ,'
-        'latitude: $plcLat, longitude: $plcLong,visitorID:$plcVisitorID}';
+        'latitude: $plcLat, longitude: $plcLong,visitorID:$selectedPlaceID}';
   }
 
   GeolocationModel.fromMap(Map<String, dynamic> map) {
@@ -37,7 +37,7 @@ class GeolocationModel {
     plcVdoID = map[COL_VIDEO_ID];
     plcLat = map[COL_POSITION_ID];
     plcLong = map[COL_POSITION_ID];
-    plcVisitorID = map[COL_PLC_VISITOR_ID];
+    selectedPlaceID = map[COL_SELECTED_PLC_ID];
   }
   Map<String, dynamic> toMap() {
     var geoMap = <String, dynamic>{
@@ -46,7 +46,7 @@ class GeolocationModel {
       COL_VIDEO_ID: plcVdoID,
       COL_POSITION_LAT: plcLat,
       COL_POSITION_LONG: plcLong,
-      COL_PLC_VISITOR_ID: plcVisitorID,
+      COL_SELECTED_PLC_ID: selectedPlaceID,
     };
     return geoMap;
   }

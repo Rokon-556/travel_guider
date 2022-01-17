@@ -2,9 +2,10 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:travel_guider/models/geolocation_model.dart';
+import 'package:travel_guider/models/selected_place_model.dart';
 import 'package:travel_guider/models/user_model.dart';
 import 'package:travel_guider/models/visit_plan_model.dart';
-import 'package:travel_guider/models/visitor_model.dart';
+
 
 class DBHelper {
   static final String CREATE_TABLE_USER = ''' create table $TABLE_USER(
@@ -13,44 +14,42 @@ class DBHelper {
   $COL_USER_PHONE text not null,
   $COL_USER_EMAIL text not null,
   $COL_USER_PASSWORD text not null,
-  $COL_USER_ROLE int not null
+  $COL_USER_ROLE text not null
   )''';
 
-  static final String CREATE_TABLE_PLACE = ''' create table $TABLE_PLACE(
+  static final String CREATE_TABLE_VISIT_PLAN = ''' create table $TABLE_PLACE(
   $COL_PLACE_ID integer primary key autoincrement not null,
   $COL_START_PLACE_NAME text not null,
   $COL_START_PLACE_LATITUDE real not null,
-  $COL_START_PLACE_LONGITUDE real not null
-  
+  $COL_START_PLACE_LONGITUDE real not null,
+  $COL_DEST_PLACE_LATITUDE real not null,
+  $COL_DEST_PLACE_LONGITUDE real not null,
+  $COL_END_PLACE_NAME text not null
   )''';
-
-
-
-  static final String CREATE_TABLE_VISITOR='''create table $TABLE_VISITOR(
-  $COL_VISITOR_ID integer primary key autoincrement,
-  $COL_VISITOR_USER_ID integer not null,
-  $COL_VISITOR_PLACE_ID integer not null,
-  $COL_VISITOR_GEO_ID integer not null,
-  foreign key($COL_VISITOR_USER_ID) references $CREATE_TABLE_USER($COL_USER_ID),
-  foreign key($COL_VISITOR_GEO_ID) references $CREATE_TABLE_GEOLOCATION($COL_VISITOR_GEO_ID)
-  
-  ) ''';
 
   static final String CREATE_TABLE_GEOLOCATION='''create table $TABLE_GEOLOCATION(
   $COL_POSITION_ID integer primary key autoincrement,
   $COL_IMAGE_ID blob,
+  $COL_VIDEO_ID blob,
   $COL_POSITION_LAT real not null,
-  $COL_POSITION_LONG real not null
-  
+  $COL_POSITION_LONG real not null,
+  $COL_SELECTED_PLC_ID int not null,
+  FOREIGN KEY ($COL_SELECTED_PLC_ID) REFERENCES $TABLE_SELECTED_PLACE($COL_SELECTED_ID)
   ) ''';
 
+  static final String CREATE_TABLE_SELECTED_PLAN='''create table $TABLE_SELECTED_PLACE(
+  $COL_SELECTED_ID integer primary key autoincrement,
+  $COL_VISITOR_SELECTED_ID int not null,
+  $COL_VISITOR_PLAN_ID int not null,
+  FOREIGN KEY ($COL_VISITOR_SELECTED_ID) REFERENCES $TABLE_USER($COL_USER_ID),
+  FOREIGN KEY ($COL_VISITOR_PLAN_ID) REFERENCES $TABLE_PLACE($COL_PLACE_ID)
+  ) ''';
 
   static void _onCreate(Database db, int version) {
     db.execute(CREATE_TABLE_USER);
-    db.execute(CREATE_TABLE_PLACE);
-
-    db.execute(CREATE_TABLE_VISITOR);
+    db.execute(CREATE_TABLE_VISIT_PLAN);
     db.execute(CREATE_TABLE_GEOLOCATION);
+    db.execute(CREATE_TABLE_SELECTED_PLAN);
   }
 
   static Future<Database> createDBUser() async {

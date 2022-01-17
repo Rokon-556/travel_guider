@@ -29,7 +29,11 @@ class _VisitItemState extends State<VisitItem> {
         child: Row(
           children: <Widget>[
             Expanded(
-              child: Text(widget.visitModel.startPlaceName.toString()),
+              child: Row(children: <Widget>[
+                Text(widget.visitModel.startPlaceName.toString()),
+                const Text(' to '),
+                Text(widget.visitModel.endPlaceName.toString())
+              ],),
               flex: 5,
             ),
             Expanded(

@@ -14,10 +14,10 @@ class UserModel {
   String email = '';
   String phone = '';
   String password = '';
-  int isAdmin=1;
+  String isAdmin='';
 
   UserModel(
-      {this.id=0,this.name = '', this.email = '', this.phone = '', this.password = '',this.isAdmin=1});
+      {this.id=0,this.name = '', this.email = '', this.phone = '', this.password = '',this.isAdmin=''});
 
   UserModel.fromMap(Map<String, dynamic> map) {
     id=map[COL_USER_ID];
