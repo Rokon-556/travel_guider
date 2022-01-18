@@ -80,8 +80,8 @@ class _VideoCallState extends State<VideoCall> {
               child: Center(
                 child:
                 //Container(),
-                //_renderLocalPreview(),
-                RtcLocalView.SurfaceView(),
+                _renderLocalPreview(),
+                //RtcLocalView.SurfaceView(),
               ),
             ),
           ),

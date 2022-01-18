@@ -189,7 +189,7 @@ class _PlacesState extends State<Places> {
                 controller:_endLongitudeController,
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
-                  hintText: 'Enter End Longitude',
+                  hintText: 'Enter End Latitude',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
