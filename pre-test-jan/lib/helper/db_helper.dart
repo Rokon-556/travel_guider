@@ -9,7 +9,7 @@ import 'package:travel_guider/models/visit_plan_model.dart';
 
 class DBHelper {
   static final String CREATE_TABLE_USER = ''' create table $TABLE_USER(
-  $COL_USER_ID integer primary key autoincrement not null,
+  $COL_USER_ID integer primary key autoincrement,
   $COL_USER_NAME text not null,
   $COL_USER_PHONE text not null,
   $COL_USER_EMAIL text not null,
@@ -18,7 +18,7 @@ class DBHelper {
   )''';
 
   static final String CREATE_TABLE_VISIT_PLAN = ''' create table $TABLE_PLACE(
-  $COL_PLACE_ID integer primary key autoincrement not null,
+  $COL_PLACE_ID integer primary key autoincrement,
   $COL_START_PLACE_NAME text not null,
   $COL_START_PLACE_LATITUDE real not null,
   $COL_START_PLACE_LONGITUDE real not null,
@@ -33,16 +33,19 @@ class DBHelper {
   $COL_VIDEO_ID blob,
   $COL_POSITION_LAT real not null,
   $COL_POSITION_LONG real not null,
-  $COL_SELECTED_PLC_ID int not null,
+  $COL_SELECTED_PLC_ID integer not null,
   FOREIGN KEY ($COL_SELECTED_PLC_ID) REFERENCES $TABLE_SELECTED_PLACE($COL_SELECTED_ID)
+  
   ) ''';
+
 
   static final String CREATE_TABLE_SELECTED_PLAN='''create table $TABLE_SELECTED_PLACE(
   $COL_SELECTED_ID integer primary key autoincrement,
-  $COL_VISITOR_SELECTED_ID int not null,
-  $COL_VISITOR_PLAN_ID int not null,
+  $COL_VISITOR_SELECTED_ID integer not null,
+  $COL_VISITOR_PLAN_ID integer not null,
   FOREIGN KEY ($COL_VISITOR_SELECTED_ID) REFERENCES $TABLE_USER($COL_USER_ID),
   FOREIGN KEY ($COL_VISITOR_PLAN_ID) REFERENCES $TABLE_PLACE($COL_PLACE_ID)
+  
   ) ''';
 
   static void _onCreate(Database db, int version) {
@@ -67,13 +70,12 @@ class DBHelper {
    }
 
 
-  static Future<int> insertUser(UserModel user) async {
+  static Future<int> insertUser(String tableName,UserModel user) async {
     print('its ok');
     final db = await createDBUser();
     print('its ok2');
-    var result = await db.insert(TABLE_USER, user.toMap());
-    print('its ok3');
-    return result;
+    return db.insert(tableName, user.toMap());
+
   }
 
   static Future<UserModel?> getUserInfo(String email, String password) async {
@@ -117,11 +119,7 @@ class DBHelper {
     await db.delete(TABLE_PLACE, where: '$COL_PLACE_ID = ?', whereArgs: [id]);
   }
 
-  // static Future<void> getInfoByID(int id)async{
-  //   final db=await createDBPlace();
-  //   await db.rawQuery("SELECT * FROM $TABLE_USER WHERE "
-  //   "$COL_PLACE_ID = FK_user_ID");
-  // }
+
 
   static Future<VisitPlanModel?> getPlacesByID(int id) async {
     final db = await createDBPlace();

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+
 
 final String TABLE_USER = 'tbl_user';
 final String COL_USER_ID='user_id';
@@ -9,7 +9,7 @@ final String COL_USER_PASSWORD = 'user_password';
 final String COL_USER_ROLE = 'user_role';
 
 class UserModel {
-  int id=0;
+  int? id;
   String name = '';
   String email = '';
   String phone = '';
@@ -17,7 +17,7 @@ class UserModel {
   String isAdmin='';
 
   UserModel(
-      {this.id=0,this.name = '', this.email = '', this.phone = '', this.password = '',this.isAdmin=''});
+      {this.id,this.name = '', this.email = '', this.phone = '', this.password = '',this.isAdmin=''});
 
   UserModel.fromMap(Map<String, dynamic> map) {
     id=map[COL_USER_ID];

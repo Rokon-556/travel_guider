@@ -42,7 +42,7 @@ class _MyRegistrationState extends State<MyRegistration> {
           name: uName, password: uPassword, email: uEmail, phone: uPhone,isAdmin: uAdmin);
       print('why');
 
-      await DBHelper.insertUser(uModel).then((userData) {
+      await DBHelper.insertUser(TABLE_USER,uModel).then((userData) {
         print('success');
         MyAlertDialog(context, "Successfully Saved");
         print('success 2');
